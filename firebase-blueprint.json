@@ -1,0 +1,136 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Hardware store product",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sku": { "type": "string", "description": "Bar code or internal code" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "brand": { "type": "string" },
+        "buyPrice": { "type": "number" },
+        "sellPrice": { "type": "number" },
+        "stock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "supplierId": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sku", "name", "buyPrice", "sellPrice", "stock", "minStock"]
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Product provider",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "contact": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "address": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Movement": {
+      "title": "Movement",
+      "description": "Inventory movement (entry, exit, adjustment)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "productId": { "type": "string" },
+        "type": { "enum": ["entry", "exit", "adjustment"] },
+        "quantity": { "type": "number" },
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "reason": { "type": "string" }
+      },
+      "required": ["productId", "type", "quantity", "userId", "date"]
+    },
+    "User": {
+      "title": "User",
+      "description": "App user profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "enum": ["admin", "employee"] },
+        "photoURL": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Client data for invoicing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "documentType": { "enum": ["DNI", "RUC"] },
+        "documentNumber": { "type": "string" },
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "email": { "type": "string", "format": "email" }
+      },
+      "required": ["documentType", "documentNumber", "name"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "Electronic document (Boleta/Factura)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "enum": ["boleta", "factura"] },
+        "series": { "type": "string" },
+        "number": { "type": "number" },
+        "date": { "type": "string", "format": "date-time" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerDocument": { "type": "string" },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "igv": { "type": "number" },
+        "total": { "type": "number" },
+        "userId": { "type": "string" },
+        "status": { "enum": ["accepted", "rejected", "pending"] },
+        "xmlUrl": { "type": "string" },
+        "pdfUrl": { "type": "string" },
+        "cdrUrl": { "type": "string" }
+      },
+      "required": ["type", "series", "number", "date", "total", "userId", "status"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Product collection"
+    },
+    "/suppliers/{supplierId}": {
+      "schema": "Supplier",
+      "description": "Supplier collection"
+    },
+    "/movements/{movementId}": {
+      "schema": "Movement",
+      "description": "Movement history"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Customers list"
+    },
+    "/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "Issued invoices"
+    },
+    "/settings/business": {
+      "schema": "object",
+      "description": "Business configuration for invoicing"
+    }
+  }
+}

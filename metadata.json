@@ -1,0 +1,6 @@
+{
+  "name": "FerroStock - Control de Inventario",
+  "description": "Aplicación profesional de control de inventario para ferreterías con alertas de stock, gestión de proveedores y reportes detallados.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": []
+}
